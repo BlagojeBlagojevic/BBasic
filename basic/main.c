@@ -43,7 +43,7 @@ void var(char* token,MEMORY *mem){
 		 //printf("\n%s",token);
 		 assert(mem->counterVar < MAX_VARS&&"\n MAX NUMBER OF VARS EXITED\n");  //ASERT THAT ALL MEMORY ISNT ALCOATED
 		 //MOzda jos kojI
-		void* s = strcpy(&mem->varName[mem->counterVar],token);
+		void* s = strcpy(mem->varName[mem->counterVar],token);
 		for(size_t i = 0;i < mem->counterVar;i++){
 			if(strcmp(mem->varName[i],token) == 0)
 			  {
@@ -85,7 +85,7 @@ void print(char* token,MEMORY *mem){
 	//printf("TOKEN %sA",token);
 	int isVarExist = 0;
 	for(size_t i = 0;i < mem->counterVar;i++){
-		if(strcmp(&mem->varName[i],token) == 0){
+		if(strcmp(mem->varName[i],token) == 0){
 		  isVarExist = 1;	
 		  for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
 				printf("%c",mem->mem[j]);
@@ -252,7 +252,7 @@ void input(char* token,MEMORY *mem ){
 	 }
 	 
 	 if(strcmp(CharTokensRepresentation[BIGER],operation) == 0){
-     	if(a != b){
+     	if(a < b){
      		char line[MAX_LINE];
      		fgets(line,MAX_LINE,f);
 		 }
@@ -266,7 +266,8 @@ void input(char* token,MEMORY *mem ){
 
 //
 void execute(MEMORY *mem){
-	FILE *f = fopen("asd.txt","r");  //Open File prob with args
+
+	FILE *f = fopen(fileName,"r");  //Open File prob with args
 	char line[MAX_LINE];     //Stores one line of instruction     kasnije flag
 	size_t numberOfLine = 0;
 	
@@ -280,13 +281,15 @@ void execute(MEMORY *mem){
  	      assert(0 && "ERROR IN READING BUFFER!!!");
 		break;
 	  }
-      char* token = strtok(line , " ");  // First token
+      char* token;// = strtok(line , " ");  // First token
+      token = (char *)calloc(40,sizeof(char));
+      token = strtok(line , " ");  // First token
       //printf("\n%s", token);
 	  int curentAdress = atoi(token); 
 	  token = strtok(0," ");      // Next token
 	  //printf("%s" ,token);
-  	  //printMemory(mem,0,7);
-  	 // printVar(mem,0,4);
+  	  //printMemory(mem,0,50);
+  	  //printVar(mem,0,20);
 	  if(strcmp(token,CharTokensRepresentation[VAR]) == 0){  //If Token is VAR
 	  	var(token,mem); 
 
@@ -319,8 +322,8 @@ void execute(MEMORY *mem){
         
         size_t i = 0;
         //check VarName
-        for(;i < mem->counterVar;i++){
-        	if(strcmp(token,&mem->varName[i])==0){
+        for(;i < mem->counterVar+1;i++){
+        	if(strcmp(token,mem->varName[i])==0){
         		varExist = 1;
         		break;
 			}
@@ -343,15 +346,15 @@ void execute(MEMORY *mem){
 		token  = strtok(0," ");
 		char sign = token[0];
 		token  = strtok(0," ");
-		printf("token %s", token);
+		//printf("token %s", token);
 			for(size_t j = 0;j < mem->counterVar;j++){
-        	if(strcmp(token,&mem->varName[j])==0){
+        	if(strcmp(token,mem->varName[j])==0){
         		lastIndex = j;
         		break;
 			}
 		}
-		printf("\nfirstIndex %d ,lastIndex %d ,i %d,sign %c",firstIndex,lastIndex,i,sign);
-		system("pause");
+		//printf("\nfirstIndex %d ,lastIndex %d ,i %d,sign %c",firstIndex,lastIndex,i,sign);
+		//system("pause");
 		mathoperations(firstIndex,lastIndex,i,sign,mem);
 	  }
 	  //printf("%s", token);
@@ -366,6 +369,8 @@ int main()
 {
 	//printf("%s", CharTokensRepresentation[PLUS]);
 	//printf("Nesto\n");
+	printf("Input File You Want to run: ");
+	gets(fileName);
 	MEMORY memory;
 	allocMemory(&memory);
 	execute(&memory);
