@@ -7,14 +7,14 @@
 #include<stdint.h>
 #include<stdlib.h>
 
-#define MAX_VARS 100             // HOW MUCH VARS WE COUDE USED AT SAME TIME
-#define SIZE_OF_MEMORY 1024      // HOW MUCH MEMORY WILL VM HAVE 
-#define MAX_LINE 100
+#define MAX_VARS 1000             // HOW MUCH VARS WE COUDE USED AT SAME TIME
+#define SIZE_OF_MEMORY 1024*1024      // HOW MUCH MEMORY WILL VM HAVE 
+#define MAX_LINE 1000
 
 
 #define arrSize(x) sizeof(x) / sizeof(x[0])
 //Type Declaration
-
+char fileName[40];
 typedef enum {
 	
 	PRINT,       //Token for printing on  screen
@@ -108,4 +108,3 @@ void execute(MEMORY *mem);
 
 #endif
  
-
