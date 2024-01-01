@@ -137,7 +137,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  counter = 0;
    	  int valueResult = value1 + value2;
 		 char resMem[30];
-		 itoa(valueResult,resMem,10);
+         sprintf(resMem,"%d",valueResult);
+		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
 		 }  
@@ -147,7 +148,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  counter = 0;
    	  int valueResult = value1 - value2;
 	     char resMem[30];
-		 itoa(valueResult,resMem,10);
+         sprintf(resMem,"%d",valueResult);
+		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
 		 }  
@@ -157,7 +159,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  counter = 0;
    	  int valueResult = value1 * value2;
  		 char resMem[30];
-		 itoa(valueResult,resMem,10);
+         sprintf(resMem,"%d",valueResult);
+		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
 		 }  
@@ -168,11 +171,26 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  assert(value2!=0&&"DIVISION BY 0 !!!");
    	  int valueResult = value1 / value2;
 		 char resMem[30];
-		 itoa(valueResult,resMem,10);
+         sprintf(resMem,"%d",valueResult);
+		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
 		 }  
 	}	
+
+    if(sign == '%'){
+   	  counter = 0;
+   	  //assert(value1>value2 &&  "MOD ERROR !!!");
+      //assert(value2!=0 &&  "MOD ERROR !!!");
+   	  int valueResult = value1 % value2;
+      //printf("%d", valueResult);
+		 char resMem[30];
+         sprintf(resMem,"%d",valueResult);
+		 //itoa(valueResult,resMem,10);
+		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
+           mem->mem[i] = resMem[counter++];
+		 }  
+	}
 	
 } 
 //INPUT
