@@ -1,6 +1,6 @@
-10 VAR a = Input_Ev ;
-20 VAR b = en_ ;
-30 VAR c = number: ; 
+10 VAR a = Input_ ;
+20 VAR b = number ;
+30 VAR c = (0-100): ; 
 40 VAR num = 00 ; 
 50 VAR e = 0 ; 
 60 VAR d = 0 ; 
