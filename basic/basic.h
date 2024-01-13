@@ -6,6 +6,7 @@
 #include<string.h>
 #include<stdint.h>
 #include<stdlib.h>
+#include<time.h>
 
 #define MAX_VARS 1000             // HOW MUCH VARS WE COUDE USED AT SAME TIME
 #define SIZE_OF_MEMORY 1024*1024      // HOW MUCH MEMORY WILL VM HAVE 
@@ -35,14 +36,15 @@ typedef enum {
 	EQUALCOND,   //Token for ==
 	VAR,         //Token for var declaration
 	NEWLINE,     //Token for printing new line character $ caracter for new line
-	INPUT        //Token for input of data 
+	INPUT,       //Token for input of data 
+	RAND         //Token for random genareted number betwen 0 - 100
 	
 }TOKENS;
 
 //Order must be the same as in enum
 const char* CharTokensRepresentation[] = {  
 	  								   	 	"PRINT",
- 	  								   	    "GOTO",
+ 	  								   	    	"GOTO",
 											"+",
 											"-",
 											"*",
@@ -60,7 +62,7 @@ const char* CharTokensRepresentation[] = {
 											"VAR",
 											"$",
 											"INPUT",
-											
+											"RAND",
                                           };
 
 //
@@ -84,6 +86,8 @@ void allocMemory(MEMORY *memory);  //Allocation of memory in VM
 void printMemory(MEMORY *memory, int start, int stop ); //Prints content of memory start stop 
 void printVar(MEMORY *memory, int start,int stop);      //Prints var related content
 //
+
+//void isVarExist(char* token, MEMORY *mem);
 // Function Declaration
 void print(char* token,MEMORY *mem);     //PRINTS VALUE FROM MEMORY FROM FOR GIVEN VAR 
 void input(char* token,MEMORY *mem);     //Inputs value from console
@@ -98,6 +102,7 @@ void gotosub(void);
 //
 //VAR ALOCATION (all vars are store as a char(BYTE) in memory)
 void var(char* token,MEMORY *mem);
+void randomA(char* token,MEMORY *mem);
 //
 //
 //
