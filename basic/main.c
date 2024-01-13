@@ -1,7 +1,10 @@
 #include "basic.h"
 
+
+
 // allocating memory for vm assert if NULL alocation
 void allocMemory(MEMORY *memory){
+	srand(time(0));
 	memory->mem = (BYTE*)calloc(SIZE_OF_MEMORY, sizeof(BYTE));
 	assert(memory->mem != NULL && "\nERROR ALOCATING MEMORY!!!\n");
 	memory->RET = 0;
@@ -280,6 +283,30 @@ void input(char* token,MEMORY *mem ){
 
 //
 
+void randomA(char* token,MEMORY *mem){
+   	srand(time(0));
+    token = strtok(0," ");
+	int isVarExist = 0;
+
+	for (size_t i = 0; i < mem->counterVar; i++)
+	{
+		
+		if(strcmp(token, mem->varName[i]) == 0){
+			isVarExist = 1;
+			
+			//Random value (0 - 100)
+		for(size_t j = mem->varMemStartPointers[i]; j < mem->varMemEndPoiners[i]; j++)
+			{mem->mem[j] =  rand()%10 + '0';srand(i);}
+
+		}
+	}
+	assert(isVarExist && "VAR IS NOT DECLARED");
+	
+
+
+
+}
+
 //
 
 //
@@ -325,6 +352,12 @@ void execute(MEMORY *mem){
 	  }
 	   else if(strcmp(CharTokensRepresentation[IF], token) == 0){
 	  	bif(token,mem,f);
+	  }
+
+
+	  else if(strcmp(CharTokensRepresentation[RAND], token) == 0){
+	  	//printf("NESTO");
+		randomA(token,mem);
 	  }
 	   else if(strcmp(CharTokensRepresentation[END], token) == 0){
 	   printf("\nEND OF THE PROGRAM !!!\n");
