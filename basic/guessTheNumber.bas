@@ -1,0 +1,32 @@
+10 VAR a = Guess_ ; 
+20 VAR b = THE ;
+30 VAR c = _number ;
+40 VAR GUESS = 0 ;
+50 VAR RANDOM = 0 ;
+60 RAND RANDOM ; 
+70 PRINT a ; 
+80 PRINT b ;
+90 PRINT c $;
+100 VAR LOW = toLow ;
+110 VAR HIGH = toHigh ; 
+120 INPUT GUESS ;
+130 IF GUESS == RANDOM ; 
+140 END ; 
+150 IF GUESS < RANDOM ; 
+160 PRINT LOW $ ; 
+170 IF GUESS > RANDOM ; 
+180 PRINT HIGH $ ; 
+190 PRINT a ; 
+200 PRINT b ;
+210 PRINT c $;
+220 GOTO 120 ;
+
+
+
+
+ 
+
+
+
+
+ 
