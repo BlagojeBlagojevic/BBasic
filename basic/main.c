@@ -283,7 +283,7 @@ void input(char* token,MEMORY *mem ){
 
 //
 
-void randomA(char* token,MEMORY *mem){
+void brandom(char* token,MEMORY *mem){
    	srand(time(0));
     token = strtok(0," ");
 	int isVarExist = 0;
@@ -296,7 +296,7 @@ void randomA(char* token,MEMORY *mem){
 			
 			//Random value (0 - 100)
 		for(size_t j = mem->varMemStartPointers[i]; j < mem->varMemEndPoiners[i]; j++)
-			{mem->mem[j] =  rand()%10 + '0';srand(i);}
+			{mem->mem[j] =  rand()%10 + '0';}
 
 		}
 	}
@@ -357,7 +357,7 @@ void execute(MEMORY *mem){
 
 	  else if(strcmp(CharTokensRepresentation[RAND], token) == 0){
 	  	//printf("NESTO");
-		randomA(token,mem);
+		brandom(token,mem);
 	  }
 	   else if(strcmp(CharTokensRepresentation[END], token) == 0){
 	   printf("\nEND OF THE PROGRAM !!!\n");
