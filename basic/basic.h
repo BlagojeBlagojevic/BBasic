@@ -102,7 +102,7 @@ void gotosub(void);
 //
 //VAR ALOCATION (all vars are store as a char(BYTE) in memory)
 void var(char* token,MEMORY *mem);
-void randomA(char* token,MEMORY *mem);
+void brandom(char* token,MEMORY *mem);
 //
 //
 //
