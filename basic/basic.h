@@ -27,18 +27,18 @@ typedef enum {
 	MOD,         //Token for % used as MOD operator or as print type
 	SEMICOLON,   //Token for end of the line
 	END,         //Token for END of a program
-	RET,		 //Token for returning from subroutine
+	RET,	     //Token for returning from subroutine
 	GOTOSUB,     //Token for Jumping to subroutine
 	EQUAL,       //Token for Adding value to variable
-	IF,			 //Token for Conditional jumping
+	IF,	     //Token for Conditional jumping
 	BIGER,       //Token for > 
 	LESER,       //Token for <
 	EQUALCOND,   //Token for ==
 	VAR,         //Token for var declaration
 	NEWLINE,     //Token for printing new line character $ caracter for new line
 	INPUT,       //Token for input of data 
-	RAND,         //Token for random genareted number betwen 0 - 100
-	LABEL 
+	RAND,        //Token for random genareted number betwen 0 - 100
+	LABEL        //Token used as a line number holder for subroutins 
 }TOKENS;
 
 //Order must be the same as in enum
