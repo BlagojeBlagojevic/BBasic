@@ -37,8 +37,8 @@ typedef enum {
 	VAR,         //Token for var declaration
 	NEWLINE,     //Token for printing new line character $ caracter for new line
 	INPUT,       //Token for input of data 
-	RAND         //Token for random genareted number betwen 0 - 100
-	
+	RAND,         //Token for random genareted number betwen 0 - 100
+	LABEL 
 }TOKENS;
 
 //Order must be the same as in enum
@@ -63,6 +63,7 @@ const char* CharTokensRepresentation[] = {
 											"$",
 											"INPUT",
 											"RAND",
+											"LABEL",
                                           };
 
 //
@@ -97,8 +98,8 @@ void mathoperations(int a, int b, int result,char sign ,MEMORY *mem);
 //
 //CONDITIONS
 void bif(char* token,MEMORY *mem, FILE *f);
-void bgoto(char *token, int curentAdress,MEMORY *mem,FILE *f);
-void gotosub(void);
+void bgoto(char *token,MEMORY *mem,FILE *f);
+void gotosub(char* token, MEMORY* mem, FILE *f);
 //
 //VAR ALOCATION (all vars are store as a char(BYTE) in memory)
 void var(char* token,MEMORY *mem);
