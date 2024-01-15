@@ -91,6 +91,7 @@ void print(char* token,MEMORY *mem){
 		if(strcmp(mem->varName[i],token) == 0){
 		  isVarExist = 1;	
 		  for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
+			   if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
 				printf("%c",mem->mem[j]);
 				//printf("Nesto");
 		  }
@@ -108,11 +109,13 @@ void print(char* token,MEMORY *mem){
 }
 //
 //GOTO 
-void bgoto(char *token, int curentAdress,MEMORY *mem,FILE *f){
-	mem->RET = curentAdress;
+//void bgoto(char *token,MEMORY *mem,FILE *f);
+
+void bgoto(char *token,MEMORY *mem,FILE *f){
+	//mem->RET = curentAdress;
 	token = strtok(0," ");
 	char line[MAX_LINE];
-	int gotoAdress = atoi(token) / 10 - 1;
+	int gotoAdress = atoi(token)  - 1;
 	//printf("adrres %d\n",gotoAdress);
 	fseek(f,0,SEEK_SET); 
 	for(size_t i = 0 ; i  < gotoAdress; i++){
@@ -306,7 +309,42 @@ void brandom(char* token,MEMORY *mem){
 
 
 }
+//GOTOSUB go to declared lable
 
+void gotosub(char* token, MEMORY* mem, FILE *f){
+	//printf("NESTO");
+	token = strtok(0," ");
+	fseek(f,0,SEEK_SET);
+	char line[MAX_LINE];
+	int counter = 0;
+	while (!feof(f))
+	{
+		counter++;
+		//printf("%d",counter);
+		fgets(line,MAX_LINE,f);
+		char* labelContainer;
+		labelContainer = strtok(line," ");
+		if(strcmp(CharTokensRepresentation[LABEL],labelContainer) == 0){
+		labelContainer = strtok(0," ");
+		if(strcmp(token,labelContainer) == 0){
+		 fseek(f,0,SEEK_SET); 
+			for(size_t i = 0 ; i  < counter; i++){
+	  			fgets(line,MAX_LINE,f);
+	 			}
+		break;
+		}
+		}
+		
+	}
+	
+	
+	
+
+	//print("%c",token[0]);
+
+}
+
+//
 //
 
 //
@@ -328,11 +366,11 @@ void execute(MEMORY *mem){
 	  }
       char* token;// = strtok(line , " ");  // First token
       token = (char *)calloc(40,sizeof(char));
-      token = strtok(line , " ");  // First token
+      //token = strtok(line , " ");  // First token
       //printf("\n%s", token);
-	  int curentAdress = atoi(token); 
-	  token = strtok(0," ");      // Next token
-	  //printf("%s" ,token);
+	  //int curentAdress = atoi(token); 
+	  token = strtok(line ," ");      // Next token
+	  //printf("%s\n" ,token);
   	  //printMemory(mem,0,50);
   	  //printVar(mem,0,20);
 	  if(strcmp(token,CharTokensRepresentation[VAR]) == 0){  //If Token is VAR
@@ -343,7 +381,7 @@ void execute(MEMORY *mem){
 	    print(token,mem);
 	  }
 	  else if(strcmp(CharTokensRepresentation[GOTO], token) == 0){
-        bgoto(token,curentAdress,mem,f);
+        bgoto(token,mem,f);
 	  }
 	  
 	  else if(strcmp(CharTokensRepresentation[INPUT], token) == 0){
@@ -362,6 +400,11 @@ void execute(MEMORY *mem){
 	   else if(strcmp(CharTokensRepresentation[END], token) == 0){
 	   printf("\nEND OF THE PROGRAM !!!\n");
 	   break;
+	   }
+
+	   else if (strcmp(CharTokensRepresentation[LABEL], token) == 0);
+	   else if (strcmp(CharTokensRepresentation[GOTOSUB], token) == 0){
+		gotosub(token,mem,f);
 	   }
       // if evriting else is finish now we nead to see math operations
 	  else{
@@ -425,6 +468,5 @@ int main()
 	MEMORY memory;
 	allocMemory(&memory);
 	execute(&memory);
-	
 	return 0;
 }
