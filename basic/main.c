@@ -458,13 +458,15 @@ void execute(MEMORY *mem){
 }
 }
 
-
-int main()
+int main(int argc, char* argv[])
 {
 	//printf("%s", CharTokensRepresentation[PLUS]);
 	//printf("Nesto\n");
-	printf("Input File You Want to run: ");
-	gets(fileName);
+	//printf("Input File You Want to run: ");
+	//printf("%s\n",argv[1]);
+	//while(1);
+	strcpy(fileName,argv[1]);
+	//printf(" %s\n",fileName);
 	MEMORY memory;
 	allocMemory(&memory);
 	execute(&memory);
