@@ -365,7 +365,7 @@ void execute(MEMORY *mem){
 		break;
 	  }
       char* token;// = strtok(line , " ");  // First token
-      token = (char *)calloc(40,sizeof(char));
+      //token = (char *)calloc(40,sizeof(char));
       //token = strtok(line , " ");  // First token
       //printf("\n%s", token);
 	  //int curentAdress = atoi(token); 
