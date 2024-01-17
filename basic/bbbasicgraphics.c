@@ -452,7 +452,7 @@ void execute(MEMORY *mem){
 		break;
 	  }
       char* token;// = strtok(line , " ");  // First token
-      token = (char *)calloc(40,sizeof(char));
+      //token = (char *)calloc(40,sizeof(char));
       //token = strtok(line , " ");  // First token
       //printf("\n%s", token);
 	  //int curentAdress = atoi(token); 
@@ -495,7 +495,7 @@ void execute(MEMORY *mem){
 		initGraphics(&renderer,&window);
 	   }
 	   else if (strcmp(CharTokensRepresentation[PIXEL], token) == 0){
-		drawPixel(renderer,window,token,mem,PIXELS);
+		drawPixel(&renderer,&window,token,mem,PIXELS);
 	   }
 
 	   else if (strcmp(CharTokensRepresentation[GOTOSUB], token) == 0){
