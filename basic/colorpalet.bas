@@ -1,0 +1,23 @@
+GRAPHICS ;
+VAR A = 000 ; 
+VAR B = 000 ; 
+VAR C = 0000 ;
+VAR 400 = 400 ;
+VAR 000 = 000 ; 
+VAR 1 = 1 ;
+LABEL TOP ;
+IF A == 400 ; 
+GOTOSUB LOOP ;
+PIXEL A B C ;
+A = A + 1 ;
+PRINT A $ ;
+GOTOSUB TOP ;
+LABEL LOOP :
+C = C + 1 ;
+A = 000 + 000 ; 
+B = B + 1 ;
+RENDER ;
+IF B == 400 ; 
+END .
+GOTOSUB TOP ;
+
