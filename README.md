@@ -24,6 +24,21 @@ There are 2 build of the interpreter:
 2. **bbbasicgraphics.c** This build does suport last 3 instuction and depends on SDL
 
 
+To compile it you need first to compile header libary for desired build. 
+Then compile desired build. 
+
+
+1.      gcc bbasic.c -lm
+2.      gcc bbbasicgraphics.c -lm -lSDL2 -lGL
+
+Then run program      
+
+1.     ./a.out filePathToProgram
+
+In example folder we will fine examples of programs. 
+
+
+
 
 
 
