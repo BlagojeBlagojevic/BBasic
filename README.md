@@ -37,6 +37,7 @@ Then run program
 
 In example folder we will fine examples of programs. 
 
+This implementation currently is  8 time slower then python in fizzbuzz test on my PC.
 
 
 
