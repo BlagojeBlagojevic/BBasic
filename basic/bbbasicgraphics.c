@@ -92,11 +92,12 @@ void print(char* token,MEMORY *mem){
 		  for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
 			   if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
 				printf("%c",mem->mem[j]);
+				//putc(mem->mem[h])
 				//printf("Nesto");
 		  }
           token = strtok(0, " ");
           //printf("%c",token[0]);
-          char str = '$'; 
+         char str = '$'; 
 		  if(token[0] == str){
 			printf("\n");
 		  }
@@ -126,22 +127,25 @@ void bgoto(char *token,MEMORY *mem,FILE *f){
 //MATH
 //
 void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
-	char valueMemFirst[30],valueMemLast[30];
+  static char valueMemFirst[30],valueMemLast[30];
 	size_t counter = 0;
 	for(size_t i = mem->varMemStartPointers[a]; i < mem->varMemEndPoiners[a]; i++){
 	  valueMemFirst[counter++] = mem->mem[i];
 	}
+	valueMemFirst[counter] = '\0';
 	counter = 0; 
 	for(size_t i = mem->varMemStartPointers[b]; i < mem->varMemEndPoiners[b]; i++){
 	  valueMemLast[counter++] = mem->mem[i];
 	}
+	valueMemLast[counter] = '\0';
 	counter = 0;
     int value1 = atoi(valueMemFirst);
     int value2 = atoi(valueMemLast);
+    char resMem[10];
     if(sign == '+'){
    	  counter = 0;
    	  int valueResult = value1 + value2;
-		 char resMem[30];
+		 
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
@@ -152,7 +156,6 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
   if(sign == '-'){
    	  counter = 0;
    	  int valueResult = value1 - value2;
-	     char resMem[30];
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
@@ -163,7 +166,6 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
     if(sign == '*'){
    	  counter = 0;
    	  int valueResult = value1 * value2;
- 		 char resMem[30];
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
@@ -175,7 +177,6 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  counter = 0;
    	  assert(value2!=0&&"DIVISION BY 0 !!!");
    	  int valueResult = value1 / value2;
-		 char resMem[30];
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
@@ -189,7 +190,6 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
       //assert(value2!=0 &&  "MOD ERROR !!!");
    	  int valueResult = value1 % value2;
       //printf("%d", valueResult);
-		 char resMem[30];
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
@@ -258,25 +258,23 @@ void input(char* token,MEMORY *mem ){
      int a = atoi(valueMemFirst);
      int b = atoi(valueMemLast);
      //printf("%s",operation);
+	 static char line[MAX_LINE];
      if(strcmp(CharTokensRepresentation[EQUALCOND],operation) == 0){
 	 //printf("\na %d b %d\n", a,b);	
-     	if(a != b){
-     		char line[MAX_LINE];
+        if(a != b){
      		fgets(line,MAX_LINE,f);
 		 }
      	
 	 }
-	 if(strcmp(CharTokensRepresentation[LESER],operation) == 0){
+	 else if(strcmp(CharTokensRepresentation[LESER],operation) == 0){
      	if(a > b){
-     		char line[MAX_LINE];
      		fgets(line,MAX_LINE,f);
 		 }
      	
 	 }
 	 
-	 if(strcmp(CharTokensRepresentation[BIGER],operation) == 0){
+	else if(strcmp(CharTokensRepresentation[BIGER],operation) == 0){
      	if(a < b){
-     		char line[MAX_LINE];
      		fgets(line,MAX_LINE,f);
 		 }
      	
@@ -314,14 +312,14 @@ void gotosub(char* token, MEMORY* mem, FILE *f){
 	//printf("NESTO");
 	token = strtok(0," ");
 	fseek(f,0,SEEK_SET);
-	char line[MAX_LINE];
+	static char line[MAX_LINE];
 	int counter = 0;
 	while (!feof(f))
 	{
 		counter++;
 		//printf("%d",counter);
 		fgets(line,MAX_LINE,f);
-		char* labelContainer;
+		static char *labelContainer;
 		labelContainer = strtok(line," ");
 		if(strcmp(CharTokensRepresentation[LABEL],labelContainer) == 0){
 		labelContainer = strtok(0," ");
@@ -350,7 +348,7 @@ void initGraphics(SDL_Renderer *renderer,SDL_Window *window){
 
 void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]){
   
-  char x[10],y[10],color[10],varX[10],varY[10],varColor[10],isDraw[10]; 
+  static char x[10],y[10],color[10],varX[10],varY[10],varColor[10],isDraw[10]; 
   int X,Y = 1,C = 1,counter = 0,ba;
   token = strtok(0, " ");
   strcpy(x,token);
@@ -362,18 +360,20 @@ void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *m
   //printf("x %s y %s z %s\n",x,y,color);
   for (size_t i = 0; i < mem->counterVar; i++)
   {
-	counter  = 0;
 	if(strcmp(x,mem->varName[i])==0){
+	   counter  = 0;
 	   for (size_t j = mem->varMemStartPointers[i]; j < mem->varMemEndPoiners[i]; j++){
 		varX[counter++] = mem->mem[j];
 	   }		
 	}
 	if(strcmp(y,mem->varName[i])==0){
+	   counter  = 0;
 	   for (size_t j = mem->varMemStartPointers[i]; j < mem->varMemEndPoiners[i]; j++){
 		varY[counter++] = mem->mem[j];
 	   } 	   
     }
   if(strcmp(color,mem->varName[i])==0){
+	   counter  = 0;
 	   for (size_t j = mem->varMemStartPointers[i]; j < mem->varMemEndPoiners[i]; j++){
 		varColor[counter++] = mem->mem[j];
 	   }	   
@@ -433,7 +433,8 @@ void execute(MEMORY *mem){
 	SDL_Event event; 
 	//	
 
-	uint8_t PIXELS[height][width];
+	static uint8_t PIXELS[height][width];
+	char* token;// = strtok(line , " ");  // First token
 
 	while(1){
 		
@@ -451,7 +452,7 @@ void execute(MEMORY *mem){
  	      assert(0 && "ERROR IN READING BUFFER!!!");
 		break;
 	  }
-      char* token;// = strtok(line , " ");  // First token
+      
       //token = (char *)calloc(40,sizeof(char));
       //token = strtok(line , " ");  // First token
       //printf("\n%s", token);
@@ -460,58 +461,53 @@ void execute(MEMORY *mem){
 	  //printf("%s\n" ,token);
   	  //printMemory(mem,0,50);
   	  //printVar(mem,0,20);
-	
-	  if(strcmp(token,CharTokensRepresentation[VAR]) == 0){  //If Token is VAR
-	  	var(token,mem); 
-
-	   }  
+	  if (strcmp(CharTokensRepresentation[GOTOSUB], token) == 0){
+		gotosub(token,mem,f);
+	   }
+	  
+      else if(strcmp(CharTokensRepresentation[IF], token) == 0){
+	  	bif(token,mem,f);
+	  }  
       else if(strcmp(CharTokensRepresentation[PRINT], token) == 0){   //If token is print
 	    print(token,mem);
 	  }
 	  else if(strcmp(CharTokensRepresentation[GOTO], token) == 0){
         bgoto(token,mem,f);
 	  }
+	  else if (strcmp(CharTokensRepresentation[PIXEL], token) == 0){
+		drawPixel(&renderer,&window,token,mem,PIXELS);
+	   }
 	  
 	  else if(strcmp(CharTokensRepresentation[INPUT], token) == 0){
 	  	input(token,mem);
 
 	  }
-	   else if(strcmp(CharTokensRepresentation[IF], token) == 0){
-	  	bif(token,mem,f);
-	  }
-
-
 	  else if(strcmp(CharTokensRepresentation[RAND], token) == 0){
 	  	//printf("NESTO");
 		brandom(token,mem);
 	  }
 	   else if(strcmp(CharTokensRepresentation[END], token) == 0){
-	   printf("\nEND OF THE PROGRAM !!!\n");
+	   		printf("\nEND OF THE PROGRAM !!!\n");
 	   break;
 	   }
-
+	   else if(strcmp(token,CharTokensRepresentation[VAR]) == 0){  //If Token is VAR
+		var(token,mem); 
+	   }
 	   else if (strcmp(CharTokensRepresentation[LABEL], token) == 0);
 	   else if (strcmp(CharTokensRepresentation[GRAPHICS], token) == 0){
 		initGraphics(&renderer,&window);
 	   }
-	   else if (strcmp(CharTokensRepresentation[PIXEL], token) == 0){
-		drawPixel(&renderer,&window,token,mem,PIXELS);
-	   }
 
-	   else if (strcmp(CharTokensRepresentation[GOTOSUB], token) == 0){
-		gotosub(token,mem,f);
-	   }
 	   else if (strcmp(CharTokensRepresentation[RENDER], token) == 0){
 		render(renderer,window,PIXELS);
 	   }
       // if evriting else is finish now we nead to see math operations
-	  else{
-        char varName[30],firstOperand[30],lastOperand[30];
-        int varExist = 0,result,firstIndex,lastIndex ;
+	   else{
+       static char varName[30],firstOperand[30],lastOperand[30];
+       static int varExist = 0,result,firstIndex,lastIndex ;
         strcpy(varName,token);
         //printf("Nesto\n\n");
 		//system("pause");
-        
         size_t i = 0;
         //check VarName
         for(;i < mem->counterVar+1;i++){
@@ -530,7 +526,6 @@ void execute(MEMORY *mem){
 		for(size_t j = 0;j < mem->counterVar;j++){
         	if(strcmp(token,mem->varName[j])==0){
         		firstIndex = j;
-        		
         		break;
 			}
 		}	
@@ -563,9 +558,15 @@ int main(int argc, char* argv[])
 	//printf("Input File You Want to run: ");
 	//printf("%s\n",argv[1]);
 	//while(1);
-	strcpy(fileName,argv[1]);
+
 	//printf(" %s\n",fileName);
-	MEMORY memory;
+	if(argc == 1){
+	  printf("path to program <program.bas>\n");
+	  return 0 ;
+	 //exit(EXIT_SUCCESS);
+	}
+	strcpy(fileName,argv[1]);
+	MEMORY static memory;
 	allocMemory(&memory);
 	execute(&memory);
 	return 0;
