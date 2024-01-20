@@ -8,15 +8,23 @@
 #include<stdlib.h>
 #include<time.h>
 
+
+//SDL_INCLUDES
+
+
+
+
+
 #define MAX_VARS 1000             // HOW MUCH VARS WE COUDE USED AT SAME TIME
 #define SIZE_OF_MEMORY 1024*1024      // HOW MUCH MEMORY WILL VM HAVE 
-#define MAX_LINE 1000
-
+#define MAX_LINE 100
+#define width 400
+#define height 400
 
 #define arrSize(x) sizeof(x) / sizeof(x[0])
 //Type Declaration
 char fileName[40];
-typedef enum {
+static  enum {
 	
 	PRINT,       //Token for printing on  screen
 	GOTO,        //Token for going onto a Line
@@ -38,11 +46,14 @@ typedef enum {
 	NEWLINE,     //Token for printing new line character $ caracter for new line
 	INPUT,       //Token for input of data 
 	RAND,        //Token for random genareted number betwen 0 - 100
-	LABEL        //Token used as a line number holder for subroutins 
+	LABEL,       //Token used as a line number holder for subroutins 
+	GRAPHICS,
+	PIXEL,
+	RENDER
 }TOKENS;
 
 //Order must be the same as in enum
-const char* CharTokensRepresentation[] = {  
+static char* CharTokensRepresentation[] = {  
 	  								   	 	"PRINT",
  	  								   	    	"GOTO",
 											"+",
@@ -64,6 +75,9 @@ const char* CharTokensRepresentation[] = {
 											"INPUT",
 											"RAND",
 											"LABEL",
+											"GRAPHICS",
+											"PIXEL",
+											"RENDER",
                                           };
 
 //
@@ -71,8 +85,7 @@ const char* CharTokensRepresentation[] = {
 typedef uint8_t  BYTE;
 typedef uint16_t WORD;  
 typedef struct{
-	
-	
+
 	char varName[MAX_VARS][20];   //STORES NAME OF A VARIABLE
 	size_t  varMemStartPointers[MAX_VARS];
 	int  varMemEndPoiners[MAX_VARS];
@@ -80,6 +93,7 @@ typedef struct{
 	int RET;                        //REPRESENT VALUE OF RETURN TO MAIN 
 	size_t counterVar;               //WHAT VARIABLE VE ARE ON            
 	size_t lastMemAddress;
+	//int numRepresentationOfTokens[];
 	
 }MEMORY;
 
@@ -111,6 +125,12 @@ void brandom(char* token,MEMORY *mem);
 void execute(MEMORY *mem);
 
 //
-
+//Graphics Function 
+//void initGraphics(SDL_Renderer *renderer,SDL_Window *window);
+//void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]);
+//void graphicsCheckQuit();
+//void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
+//
+//
 #endif
  
