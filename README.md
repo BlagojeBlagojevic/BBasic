@@ -6,17 +6,17 @@ Simple Basic Like Iterpreter.
 
 
 Currently supported instructions are:
-1.  **VAR** -> Declaring variable
-2.  **LABEL** -> Declaring label
-3.  **GOTO** -> Go to line number
-4.  **GOTOSUB** -> Go to label
-5.  **IF** -> Condition statement if TRUE do line + 1 else skip
-6.  **END** -> Used to indicate end of the program
-7.  **RAND** -> Generate random number
-8.  **INPUT** -> Allows to enter a variable
+1.  **VAR**      -> Declaring variable
+2.  **LABEL**    -> Declaring label
+3.  **GOTO**     -> Go to line number
+4.  **GOTOSUB**  -> Go to label
+5.  **IF**       -> Condition statement if TRUE do line + 1 else skip
+6.  **END**      -> Used to indicate end of the program
+7.  **RAND**     -> Generate random number
+8.  **INPUT**    -> Allows to enter a variable
 9.  **GRAPHICS** -> Initialize graphics see below
-10. **PIXEL** -> Put pixel on screen
-11. **RENDER** -> Renders the screen
+10. **PIXEL**    -> Put pixel on screen
+11. **RENDER**   -> Renders the screen
 
 
 There are 2 build of the interpreter:
@@ -25,6 +25,10 @@ There are 2 build of the interpreter:
 
 
 To compile it you need first to compile header libary for desired build. 
+
+1.      gcc bbasic.h 
+2.      gcc bbbasicgraphics.h 
+
 Then compile desired build. 
 
 
@@ -37,7 +41,7 @@ Then run program
 
 In example folder we will fine examples of programs. 
 
-This implementation currently is  8 time slower then python in fizzbuzz test on my PC.
+This implementation currently is  2 time slower then python in fizzbuzz test on my PC.
 
 
 
