@@ -90,7 +90,7 @@ void print(char* token,MEMORY *mem){
 		if(strcmp(mem->varName[i],token) == 0){
 		  isVarExist = 1;	
 		  for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
-			   if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
+			if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
 				printf("%c",mem->mem[j]);
 				//putc(mem->mem[h])
 				//printf("Nesto");
@@ -139,14 +139,16 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 	}
 	valueMemLast[counter] = '\0';
 	counter = 0;
-    int value1 = atoi(valueMemFirst);
-    int value2 = atoi(valueMemLast);
-    char resMem[10];
+	//printf("FLOAT %s\n",valueMemFirst);
+    float value1 =  atof(valueMemFirst);
+    float value2 =  atof(valueMemLast);
+    static float valueResult;
+    static char resMem[10];
     if(sign == '+'){
    	  counter = 0;
-   	  int valueResult = value1 + value2;
+   	  valueResult = value1 + value2;
 		 
-         sprintf(resMem,"%d",valueResult);
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -155,8 +157,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 
   if(sign == '-'){
    	  counter = 0;
-   	  int valueResult = value1 - value2;
-         sprintf(resMem,"%d",valueResult);
+   	  valueResult = value1 - value2;
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -165,8 +167,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 	
     if(sign == '*'){
    	  counter = 0;
-   	  int valueResult = value1 * value2;
-         sprintf(resMem,"%d",valueResult);
+   	  valueResult = value1 * value2;
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -176,8 +178,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 	  if(sign == '/'){
    	  counter = 0;
    	  assert(value2!=0&&"DIVISION BY 0 !!!");
-   	  int valueResult = value1 / value2;
-         sprintf(resMem,"%d",valueResult);
+   	  valueResult = value1 / value2;
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -188,7 +190,7 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  counter = 0;
    	  //assert(value1>value2 &&  "MOD ERROR !!!");
       //assert(value2!=0 &&  "MOD ERROR !!!");
-   	  int valueResult = value1 % value2;
+   	  int valueResult = (int)value1 % (int)value2;
       //printf("%d", valueResult);
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
@@ -301,10 +303,6 @@ void brandom(char* token,MEMORY *mem){
 		}
 	}
 	assert(isVarExist && "VAR IS NOT DECLARED");
-	
-
-
-
 }
 //GOTOSUB go to declared lable
 
@@ -393,7 +391,7 @@ void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *m
 }
 //Render pixels
 void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]){
-	SDL_RenderClear(renderer);
+SDL_RenderClear(renderer);
 for (size_t i = 0; i < height; i++)
  {
 	for (size_t j = 0; j < width; j++)
@@ -495,7 +493,8 @@ void execute(MEMORY *mem){
 	   }
 	   else if (strcmp(CharTokensRepresentation[LABEL], token) == 0);
 	   else if (strcmp(CharTokensRepresentation[GRAPHICS], token) == 0){
-		initGraphics(&renderer,&window);
+		SDL_CreateWindowAndRenderer(width,height,SDL_RENDERER_ACCELERATED,&window,&renderer);
+		//initGraphics(&renderer,&window);
 	   }
 
 	   else if (strcmp(CharTokensRepresentation[RENDER], token) == 0){
