@@ -14,9 +14,10 @@ Currently supported instructions are:
 6.  **END**      -> Used to indicate end of the program
 7.  **RAND**     -> Generate random number
 8.  **INPUT**    -> Allows to enter a variable
-9.  **GRAPHICS** -> Initialize graphics see below
-10. **PIXEL**    -> Put pixel on screen
-11. **RENDER**   -> Renders the screen
+9.  **LOAD**     -> Load variable B to A START : STOP
+10.  **GRAPHICS** -> Initialize graphics see below
+11. **PIXEL**    -> Put pixel on screen
+12. **RENDER**   -> Renders the screen
 
 
 There are 2 build of the interpreter:
@@ -27,7 +28,7 @@ There are 2 build of the interpreter:
 To compile it you need first to compile header libary for desired build. 
 
 1.      gcc bbasic.h 
-2.      gcc bbbasicgraphics.h 
+2.      gcc basicgraphics.h 
 
 Then compile desired build. 
 
