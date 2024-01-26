@@ -1,4 +1,5 @@
-#include "basicgraphics.h"
+#include "b.h"
+
 
 
 // allocating memory for vm assert if NULL alocation
@@ -414,7 +415,56 @@ SDL_SetRenderDrawColor(renderer,0,0,0,0);
 SDL_RenderPresent(renderer);
 
 }
+//Load value of b to a to memory start:stop
+void load(char* token,MEMORY *mem){
+  token = strtok(NULL," ");
+  //printf("%s",token);
+  int doesExist = 0;
+  size_t A, B;
 
+  //CHECK DOES VAR A AND B  EXIST AND SAVE THER INDEX
+  for (size_t i = 0; i < mem->counterVar; i++)
+  {
+    if (strcmp(token,mem->varName[i]) == 0)
+    {
+        A = i;
+        token = strtok(NULL," ");
+        //printf("\n%s\n",token);
+        for (size_t j = 0; j < mem->counterVar; j++)
+        {
+            if (strcmp(token,mem->varName[j]) == 0){
+              doesExist = 1;
+              B = j + mem->varMemStartPointers[j] - 1; 
+              break;
+            }
+        }
+        break;
+    }
+      
+
+  }
+  assert(doesExist && "Var does not exist");
+    //size_t start, end
+  token = strtok(0," ");
+  size_t start  = atoi(token) + mem->varMemStartPointers[A];
+  token = strtok(0," ");
+  token = strtok(0," ");
+  size_t end  = atoi(token) + mem->varMemStartPointers[A];
+
+  //printf("load %ld : %ld\n",start, end);
+  size_t counter = 0;
+  for (size_t i =  start; i < end; i++)
+  {
+    // printf("a = %c  b = %c\n",mem->mem[i], mem->mem[B + (counter)]);
+     mem->mem[i] =  mem->mem[B + (counter)]; 
+     counter++; 
+  }
+  
+
+}
+
+
+//
 
 //
 
@@ -433,7 +483,7 @@ void execute(MEMORY *mem){
 
 	static uint8_t PIXELS[height][width];
 	char* token;// = strtok(line , " ");  // First token
-
+	
 	while(1){
 		
 		if(SDL_PollEvent(&event)){	
@@ -466,6 +516,11 @@ void execute(MEMORY *mem){
       else if(strcmp(CharTokensRepresentation[IF], token) == 0){
 	  	bif(token,mem,f);
 	  }  
+	else if(strcmp(CharTokensRepresentation[LOAD], token) == 0){
+	    load(token,mem);
+	}
+
+
       else if(strcmp(CharTokensRepresentation[PRINT], token) == 0){   //If token is print
 	    print(token,mem);
 	  }
@@ -565,7 +620,7 @@ int main(int argc, char* argv[])
 	 //exit(EXIT_SUCCESS);
 	}
 	strcpy(fileName,argv[1]);
-	MEMORY static memory;
+	MEMORY  memory;
 	allocMemory(&memory);
 	execute(&memory);
 	return 0;
