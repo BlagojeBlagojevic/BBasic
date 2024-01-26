@@ -34,7 +34,7 @@
 #define arrSize(x) sizeof(x) / sizeof(x[0])
 //Type Declaration
 char fileName[40];
-static  enum {
+typedef enum {
 	
 	PRINT,       //Token for printing on  screen
 	GOTO,        //Token for going onto a Line
@@ -48,7 +48,7 @@ static  enum {
 	RET,	     //Token for returning from subroutine
 	GOTOSUB,     //Token for Jumping to subroutine
 	EQUAL,       //Token for Adding value to variable
-	IF,	     //Token for Conditional jumping
+	IF,	         //Token for Conditional jumping
 	BIGER,       //Token for > 
 	LESER,       //Token for <
 	EQUALCOND,   //Token for ==
@@ -57,10 +57,14 @@ static  enum {
 	INPUT,       //Token for input of data 
 	RAND,        //Token for random genareted number betwen 0 - 100
 	LABEL,       //Token used as a line number holder for subroutins 
-	GRAPHICS,
-	PIXEL,
-	RENDER
+	GRAPHICS,    //Token used to load a graphics
+	PIXEL,       //Token for store walue of pixel
+	RENDER,      //Token used to render the scren in pixels
+	LOAD,
+    READ,
+	
 }TOKENS;
+
 
 //Order must be the same as in enum
 static char* CharTokensRepresentation[] = {  
@@ -88,6 +92,8 @@ static char* CharTokensRepresentation[] = {
 											"GRAPHICS",
 											"PIXEL",
 											"RENDER",
+											"LOAD",
+											"READ",
                                           };
 
 //
@@ -140,6 +146,9 @@ void initGraphics(SDL_Renderer *renderer,SDL_Window *window);
 void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]);
 void graphicsCheckQuit();
 void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
+//Memory Function
+void load(char* token,MEMORY *mem);
+//
 //
 //
 #endif
