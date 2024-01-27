@@ -1,4 +1,5 @@
-#include "basicgraphics.h"
+#include "b.h"
+
 
 
 // allocating memory for vm assert if NULL alocation
@@ -90,7 +91,7 @@ void print(char* token,MEMORY *mem){
 		if(strcmp(mem->varName[i],token) == 0){
 		  isVarExist = 1;	
 		  for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
-			   if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
+			if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
 				printf("%c",mem->mem[j]);
 				//putc(mem->mem[h])
 				//printf("Nesto");
@@ -139,14 +140,16 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 	}
 	valueMemLast[counter] = '\0';
 	counter = 0;
-    int value1 = atoi(valueMemFirst);
-    int value2 = atoi(valueMemLast);
-    char resMem[10];
+	//printf("FLOAT %s\n",valueMemFirst);
+    float value1 =  atof(valueMemFirst);
+    float value2 =  atof(valueMemLast);
+    static float valueResult;
+    static char resMem[10];
     if(sign == '+'){
    	  counter = 0;
-   	  int valueResult = value1 + value2;
+   	  valueResult = value1 + value2;
 		 
-         sprintf(resMem,"%d",valueResult);
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -155,8 +158,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 
   if(sign == '-'){
    	  counter = 0;
-   	  int valueResult = value1 - value2;
-         sprintf(resMem,"%d",valueResult);
+   	  valueResult = value1 - value2;
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -165,8 +168,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 	
     if(sign == '*'){
    	  counter = 0;
-   	  int valueResult = value1 * value2;
-         sprintf(resMem,"%d",valueResult);
+   	  valueResult = value1 * value2;
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -176,8 +179,8 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
 	  if(sign == '/'){
    	  counter = 0;
    	  assert(value2!=0&&"DIVISION BY 0 !!!");
-   	  int valueResult = value1 / value2;
-         sprintf(resMem,"%d",valueResult);
+   	  valueResult = value1 / value2;
+         sprintf(resMem,"%f",valueResult);
 		 //itoa(valueResult,resMem,10);
 		 for(size_t i = mem->varMemStartPointers[result]; i  < mem->varMemEndPoiners[result];i++){
            mem->mem[i] = resMem[counter++];
@@ -188,7 +191,7 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem){
    	  counter = 0;
    	  //assert(value1>value2 &&  "MOD ERROR !!!");
       //assert(value2!=0 &&  "MOD ERROR !!!");
-   	  int valueResult = value1 % value2;
+   	  int valueResult = (int)value1 % (int)value2;
       //printf("%d", valueResult);
          sprintf(resMem,"%d",valueResult);
 		 //itoa(valueResult,resMem,10);
@@ -301,10 +304,6 @@ void brandom(char* token,MEMORY *mem){
 		}
 	}
 	assert(isVarExist && "VAR IS NOT DECLARED");
-	
-
-
-
 }
 //GOTOSUB go to declared lable
 
@@ -340,10 +339,58 @@ void gotosub(char* token, MEMORY* mem, FILE *f){
 
 
 
-
 //check quit 
 
+//Load value of b to a to memory start:stop
+void load(char* token,MEMORY *mem){
+  token = strtok(NULL," ");
+  //printf("%s",token);
+  int doesExist = 0;
+  size_t A, B;
 
+  //CHECK DOES VAR A AND B  EXIST AND SAVE THER INDEX
+  for (size_t i = 0; i < mem->counterVar; i++)
+  {
+    if (strcmp(token,mem->varName[i]) == 0)
+    {
+        A = i;
+        token = strtok(NULL," ");
+        //printf("\n%s\n",token);
+        for (size_t j = 0; j < mem->counterVar; j++)
+        {
+            if (strcmp(token,mem->varName[j]) == 0){
+              doesExist = 1;
+              B = j + mem->varMemStartPointers[j] - 1; 
+              break;
+            }
+        }
+        break;
+    }
+      
+
+  }
+  assert(doesExist && "Var does not exist");
+    //size_t start, end
+  token = strtok(0," ");
+  size_t start  = atoi(token) + mem->varMemStartPointers[A];
+  token = strtok(0," ");
+  token = strtok(0," ");
+  size_t end  = atoi(token) + mem->varMemStartPointers[A];
+
+  //printf("load %ld : %ld\n",start, end);
+  size_t counter = 0;
+  for (size_t i =  start; i < end; i++)
+  {
+    // printf("a = %c  b = %c\n",mem->mem[i], mem->mem[B + (counter)]);
+     mem->mem[i] =  mem->mem[B + (counter)]; 
+     counter++; 
+  }
+  
+
+}
+
+
+//
 
 //
 
@@ -355,13 +402,21 @@ void execute(MEMORY *mem){
 	size_t numberOfLine = 0;
 
 	//GRAPHIC STUF
-	
+	SDL_Renderer *renderer;
+	SDL_Window *window;
+	SDL_Event event; 
+	//	
 
 	static uint8_t PIXELS[height][width];
 	char* token;// = strtok(line , " ");  // First token
-
-	while(1){
 	
+	while(1){
+		
+		if(SDL_PollEvent(&event)){	
+		if(event.type == SDL_QUIT){
+			break;
+		}
+		}
 	  void* s =  fgets(line,MAX_LINE,f);       //Read line of instructions
 	  //printf("%s line ",line);
 	  if(s == NULL){
@@ -387,6 +442,11 @@ void execute(MEMORY *mem){
       else if(strcmp(CharTokensRepresentation[IF], token) == 0){
 	  	bif(token,mem,f);
 	  }  
+	else if(strcmp(CharTokensRepresentation[LOAD], token) == 0){
+	    load(token,mem);
+	}
+
+
       else if(strcmp(CharTokensRepresentation[PRINT], token) == 0){   //If token is print
 	    print(token,mem);
 	  }
@@ -411,6 +471,7 @@ void execute(MEMORY *mem){
 		var(token,mem); 
 	   }
 	   else if (strcmp(CharTokensRepresentation[LABEL], token) == 0);
+	
       // if evriting else is finish now we nead to see math operations
 	   else{
        static char varName[30],firstOperand[30],lastOperand[30];
@@ -476,7 +537,7 @@ int main(int argc, char* argv[])
 	 //exit(EXIT_SUCCESS);
 	}
 	strcpy(fileName,argv[1]);
-	MEMORY static memory;
+	MEMORY  memory;
 	allocMemory(&memory);
 	execute(&memory);
 	return 0;
