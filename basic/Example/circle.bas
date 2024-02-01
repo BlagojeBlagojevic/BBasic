@@ -9,6 +9,7 @@ VAR CX = 200 ;
 VAR CY = 200 ;
 VAR 400 = 400 ;
 VAR 000 = 000 ; 
+VAR 300 = 300 ;
 VAR 1 = 1 ;
 LABEL TOP ;
 A^2 = CX - A ;
@@ -26,8 +27,8 @@ LABEL LOOP :
 A = 000 + 000 ; 
 B = B + 1 ;
 PRINT B $ ;
-RENDER ;
-IF B == 400 ; 
+IF B == 300 :
+RENDER ; 
+IF B == 400 ;
 END .
 GOTOSUB TOP ;
-
