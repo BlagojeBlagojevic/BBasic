@@ -90,12 +90,16 @@ void print(char* token,MEMORY *mem){
 	for(size_t i = 0;i < mem->counterVar;i++){
 		if(strcmp(mem->varName[i],token) == 0){
 		  isVarExist = 1;	
-		  for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
-			if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
-				printf("%c",mem->mem[j]);
+		  //for(size_t j = mem->varMemStartPointers[i];j <  mem->varMemEndPoiners[i];j++){
+		//	if(mem->mem[j] >= 32 && mem->mem[j] <= 127)
+		//		printf("%c",mem->mem[j]);
 				//putc(mem->mem[h])
 				//printf("Nesto");
-		  }
+		  //}
+		
+	  write(1,&mem->mem[mem->varMemStartPointers[i]],mem->varMemEndPoiners[i]-mem->varMemStartPointers[i]);
+				
+		  
           token = strtok(0, " ");
           //printf("%c",token[0]);
          char str = '$'; 
