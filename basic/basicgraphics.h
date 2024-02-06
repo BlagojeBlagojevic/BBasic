@@ -67,7 +67,7 @@ typedef enum {
 
 
 //Order must be the same as in enum
-static char* CharTokensRepresentation[] = {  
+const char* CharTokensRepresentation[] = {  
 	  								   	 	"PRINT",
  	  								   	    	"GOTO",
 											"+",
