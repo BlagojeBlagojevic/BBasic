@@ -141,10 +141,10 @@ void execute(MEMORY *mem);
 
 //
 //Graphics Function 
-//void initGraphics(SDL_Renderer *renderer,SDL_Window *window);
-//void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]);
-//void graphicsCheckQuit();
-//void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
+void initGraphics(SDL_Renderer *renderer,SDL_Window *window);
+void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]);
+void graphicsCheckQuit();
+void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
 //Memory Function
 void load(char* token,MEMORY *mem);
 //
