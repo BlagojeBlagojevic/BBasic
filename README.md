@@ -33,8 +33,8 @@ To compile it you need first to compile header libary for desired build.
 Then compile desired build. 
 
 
-1.      gcc bbasic.c -lm
-2.      gcc bbbasicgraphics.c -lm -lSDL2 -lGL
+1.      gcc bbasic.c -lm -O0
+2.      gcc bbbasicgraphics.c -lm -lSDL2 -lGL -O0
 
 Then run program      
 
