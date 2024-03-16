@@ -38,7 +38,7 @@
 //__attribute__((vector (clauses))) //return_type simd_enabled_function_name(arguments);
 
 //Type Declaration
-char fileName[30];
+char fileName[40];
 typedef enum {
 	
 	PRINT,       //Token for printing on  screen
@@ -65,7 +65,8 @@ typedef enum {
 	GRAPHICS,    //Token used to load a graphics
 	PIXEL,       //Token for store walue of pixel
 	RENDER,      //Token used to render the scren in pixels
-	LOAD
+	LOAD,        //Token for loading part of var in memory
+	KEYINPUT     //Token for loading key value if key is press if not somting return
 
 	
 }TOKENS;
@@ -99,6 +100,7 @@ const char* CharTokensRepresentation[] = {
 											"PIXEL",
 											"RENDER",
 											"LOAD",
+											"KEYINPUT",
                                           };
 
 //
@@ -154,6 +156,9 @@ static inline void graphicsCheckQuit();
 static inline void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
 //Memory Function
 static inline void load(char* token,MEMORY *mem);
+//
+//Keybord input
+static inline void keyboardCheck(char* token,MEMORY *mem);
 //
 //
 //
