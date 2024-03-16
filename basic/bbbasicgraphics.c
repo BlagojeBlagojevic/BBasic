@@ -72,7 +72,7 @@ static inline void var(char* token,MEMORY *mem) {
 				break;
 				}
 			else {
-				mem->mem[mem->lastMemAddress++] = token[i];
+				mem->mem[mem->lastMemAddress++] = (uint8_t)token[i];
 				}
 			}
 		mem->varMemEndPoiners[mem->counterVar] = mem->lastMemAddress;
@@ -466,6 +466,34 @@ static inline void load(char* token,MEMORY *mem) {
 	}
 
 
+//Keyboard input 
+static inline void keyboardCheck(char* token,MEMORY *mem){
+	
+	SDL_Event event;
+	token = strtok(0," ");
+		
+	//system("pause");
+	uint8_t ke = 0;
+	
+	if(SDL_PollEvent(&event)){
+		ke = (uint8_t)event.key.keysym.sym;
+		//printf("key %u %c\n", ke, ke);
+		for(size_t i = 0; i < mem->counterVar;i++){
+		if(strcmp(token,mem->varName[i]) == 0){
+			mem->mem[mem->varMemStartPointers[i]]  = (uint8_t)ke;
+			//printf("start %d",mem->varMemStartPointers[i]);
+			//system("pause");
+			//printf()
+		}
+	}
+		//system("pause");
+	}
+		
+
+	
+	
+}
+
 //
 
 //
@@ -560,6 +588,12 @@ static inline void execute(MEMORY *mem) {
 		else if (memcmp(CharTokensRepresentation[RENDER], token,6) == 0) {
 			render(renderer,window,PIXELS);
 			}
+			
+		else if(memcmp(CharTokensRepresentation[KEYINPUT], token,8) == 0) {
+			//printf("Key is hear!!!\n");
+			keyboardCheck(token,mem);
+			}
+			
 		// if evriting else is finish now we nead to see math operations
 		else {
 			//printf("Math\n");
@@ -610,6 +644,7 @@ static inline void execute(MEMORY *mem) {
 		//system("pause");
 		}
 	}
+	
 
 
 int main(int argc, char* argv[]) {
