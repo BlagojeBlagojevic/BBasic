@@ -1,3 +1,4 @@
+
 #ifndef BASIC_IMPLEMENTATION
 #define BASIC_IMPLEMENTATION
 
@@ -22,6 +23,7 @@
 #include<SDL2/SDL_clipboard.h>
 #include<SDL2/SDL_events.h>
 
+//#include <windows.h>
 
 
 
@@ -31,9 +33,12 @@
 #define width 400
 #define height 400
 
-#define arrSize(x) sizeof(x) / sizeof(x[0])
+#define arrSize(x) (sizeof(x) / sizeof(x[0]))
+
+//__attribute__((vector (clauses))) //return_type simd_enabled_function_name(arguments);
+
 //Type Declaration
-char fileName[40];
+char fileName[30];
 typedef enum {
 	
 	PRINT,       //Token for printing on  screen
@@ -68,8 +73,9 @@ typedef enum {
 
 //Order must be the same as in enum
 const char* CharTokensRepresentation[] = {  
-	  								   	 	"PRINT",
- 	  								   	    	"GOTO",
+	  								  
+											"PRINT",
+ 	  								  "GOTO",
 											"+",
 											"-",
 											"*",
@@ -112,41 +118,42 @@ typedef struct{
 	
 }MEMORY;
 
-void allocMemory(MEMORY *memory);  //Allocation of memory in VM
-void printMemory(MEMORY *memory, int start, int stop ); //Prints content of memory start stop 
-void printVar(MEMORY *memory, int start,int stop);      //Prints var related content
+static inline void allocMemory(MEMORY *memory);  //Allocation of memory in VM
+static inline void printMemory(MEMORY *memory, int start, int stop ); //Prints content of memory start stop 
+static inline void printVar(MEMORY *memory, int start,int stop);      //Prints var related content
 //
 
 //void isVarExist(char* token, MEMORY *mem);
 // Function Declaration
-void print(char* token,MEMORY *mem);     //PRINTS VALUE FROM MEMORY FROM FOR GIVEN VAR 
-void input(char* token,MEMORY *mem);     //Inputs value from console
+static inline void print(char* token,MEMORY *mem);     //PRINTS VALUE FROM MEMORY FROM FOR GIVEN VAR 
+static inline void input(char* token,MEMORY *mem);     //Inputs value from console
 //
 //MATH result is num of index for result
-void mathoperations(int a, int b, int result,char sign ,MEMORY *mem);
+static inline void mathoperations(int a, int b, int result,char sign ,MEMORY *mem);
 //
 //CONDITIONS
-void bif(char* token,MEMORY *mem, FILE *f);
-void bgoto(char *token,MEMORY *mem,FILE *f);
-void gotosub(char* token, MEMORY* mem, FILE *f);
+
+static inline void bif(char* token,MEMORY *mem, FILE *f);
+static inline void bgoto(char *token,MEMORY *mem,FILE *f);
+static inline void gotosub(char* token, MEMORY* mem, FILE *f);
 //
 //VAR ALOCATION (all vars are store as a char(BYTE) in memory)
-void var(char* token,MEMORY *mem);
-void brandom(char* token,MEMORY *mem);
+static inline void var(char* token,MEMORY *mem);
+static inline void brandom(char* token,MEMORY *mem);
 //
 //
 //
 //EXECUTE
-void execute(MEMORY *mem);
+static inline void execute(MEMORY *mem);
 
 //
 //Graphics Function 
-void initGraphics(SDL_Renderer *renderer,SDL_Window *window);
-void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]);
-void graphicsCheckQuit();
-void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
+static inline void initGraphics(SDL_Renderer **renderer,SDL_Window **window);
+static inline void drawPixel(SDL_Renderer **renderer,SDL_Window **window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]);
+static inline void graphicsCheckQuit();
+static inline void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]);
 //Memory Function
-void load(char* token,MEMORY *mem);
+static inline void load(char* token,MEMORY *mem);
 //
 //
 //
