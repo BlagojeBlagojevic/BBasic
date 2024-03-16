@@ -3,7 +3,7 @@
 
 
 // allocating memory for vm assert if NULL alocation
-void allocMemory(MEMORY *memory) {
+static inline void allocMemory(MEMORY *memory) {
 	srand(time(0));
 	memory->mem = (BYTE*)calloc(SIZE_OF_MEMORY, sizeof(BYTE));
 	assert(memory->mem != NULL && "\nERROR ALOCATING MEMORY!!!\n");
@@ -16,21 +16,21 @@ void allocMemory(MEMORY *memory) {
 		//memory->varName[i] = NULL;
 		}
 	}
-void printMemory(MEMORY *memory,int start,int stop) {
+static inline void printMemory(MEMORY *memory,int start,int stop) {
 	printf("\n\n\t*******************************************\n\n\t\t\t");
 	printf("MEMORY\n");
 	printf("\n\n\t*******************************************\n\n\t\t\t");
 	for(size_t i = start; i < stop; i++) {
-		printf("\non mem locarion %lu value is %c\n",i,memory->mem[i]);
+		printf("\non mem locarion %d value is %c\n",(int)i,memory->mem[i]);
 		}
 	system("pause");
 	}
-void printVar(MEMORY *memory,int start,int stop) {
+static inline void printVar(MEMORY *memory,int start,int stop) {
 	printf("\n\n\t*******************************************\n\n\t\t\t");
 	printf("VAR\n");
 	printf("\n\n\t*******************************************\n\n\t\t\t");
 	for(size_t i = start; i < stop; i++) {
-		printf("\nvar %lu has name %s starts at %u ends at %u\n",i,memory->varName[i],memory->varMemStartPointers[i],memory->varMemEndPoiners[i]);
+		printf("\nvar %d has name %s starts at %d ends at %d\n",(int)i,memory->varName[i],(int)memory->varMemStartPointers[i],(int)memory->varMemEndPoiners[i]);
 		}
 	}
 //car
@@ -39,7 +39,7 @@ void printVar(MEMORY *memory,int start,int stop) {
 //if var alredy exist assert
 //stores var name var start and var end mem pointer
 //stores all values in memory
-void var(char* token,MEMORY *mem) {
+static inline void var(char* token,MEMORY *mem) {
 
 	token = strtok(NULL," "); //AFTER VAR NEXT TOKEN
 	//printf("\nstring %s",token);
@@ -60,10 +60,14 @@ void var(char* token,MEMORY *mem) {
 	if (token != NULL) {
 		token = strtok(0, " ");
 		//printf("\n%s",token);
-		int size = arrSize(token);
+		//strcpy(pom,token);
+		//int counter = 0; 
+		//size_t y = 0;
+		//for(;token[y]!= '\0';y++);
+		//int size = arrSize(token);
 		//printf("\n%d", size);
 		//memcpy(&mem->mem[mem->lastMemAddress],token,size);
-		for(size_t i = 0; i < size; i++) {
+		for(size_t i = 0;; i++) {
 			if(token[i]== '\0') {
 				break;
 				}
@@ -84,7 +88,7 @@ void var(char* token,MEMORY *mem) {
 //PRINT
 //Prints value on screen
 //$ represent new line
-void print(char* token,MEMORY *mem) {
+static inline void print(char* token,MEMORY *mem) {
 	token = strtok(0, " ");
 	//printf("TOKEN %sA",token);
 	int isVarExist = 0;
@@ -98,9 +102,7 @@ void print(char* token,MEMORY *mem) {
 			//printf("Nesto");
 			//}
 
-			write(1,&mem->mem[mem->varMemStartPointers[i]],mem->varMemEndPoiners[i]-mem->varMemStartPointers[i]);
-
-
+			write(1,(void*)&mem->mem[mem->varMemStartPointers[i]],(void*)(mem->varMemEndPoiners[i]-mem->varMemStartPointers[i]));
 			token = strtok(0, " ");
 			//printf("%c",token[0]);
 			static const char str = '$';
@@ -117,7 +119,7 @@ void print(char* token,MEMORY *mem) {
 //GOTO
 //void bgoto(char *token,MEMORY *mem,FILE *f);
 
-void bgoto(char *token,MEMORY *mem,FILE *f) {
+static inline void bgoto(char *token,MEMORY *mem,FILE *f) {
 	//mem->RET = curentAdress;
 	token = strtok(0," ");
 	char line[MAX_LINE];
@@ -132,7 +134,7 @@ void bgoto(char *token,MEMORY *mem,FILE *f) {
 //
 //MATH
 //
-void mathoperations(int a, int b, int result, char sign,MEMORY *mem) {
+static inline void mathoperations(int a, int b, int result, char sign,MEMORY *mem) {
 	static char valueMemFirst[30],valueMemLast[30];
 	size_t counter = 0;
 	for(size_t i = mem->varMemStartPointers[a]; i < mem->varMemEndPoiners[a]; i++) {
@@ -149,7 +151,7 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem) {
 	float value1 =  atof(valueMemFirst);
 	float value2 =  atof(valueMemLast);
 	static float valueResult;
-	static char resMem[10];
+	static char resMem[14];
 	if(sign == '+') {
 		counter = 0;
 		valueResult = value1 + value2;
@@ -207,7 +209,7 @@ void mathoperations(int a, int b, int result, char sign,MEMORY *mem) {
 
 	}
 //INPUT
-void input(char* token,MEMORY *mem ) {
+static inline void input(char* token,MEMORY *mem ) {
 	char str[30];
 	int indexOfVar = -1;
 	token = strtok(0," ");
@@ -227,7 +229,7 @@ void input(char* token,MEMORY *mem ) {
 	}
 //
 // IF contition is met jmp to mem location else pass
-void bif(char* token,MEMORY *mem,FILE *f) {
+static inline void bif(char* token,MEMORY *mem,FILE *f) {
 	token = strtok(0," ");
 	int indexOfFirst = -1;
 	for(size_t i = 0; i < mem->counterVar; i++) {
@@ -240,7 +242,7 @@ void bif(char* token,MEMORY *mem,FILE *f) {
 
 
 	token = strtok(0," ");
-	char operation[30];
+	static char operation[30];
 	strcpy(operation,token);
 
 	token = strtok(0," ");
@@ -253,15 +255,18 @@ void bif(char* token,MEMORY *mem,FILE *f) {
 		}
 	assert(indexOfLast!=-1 && "VAR IS NOT DECLARED!!!");
 
-	char valueMemFirst[30],valueMemLast[30];
+	static char valueMemFirst[30],valueMemLast[30];
+	
 	size_t counter = 0;
 	for(size_t i = mem->varMemStartPointers[indexOfFirst]; i < mem->varMemEndPoiners[indexOfFirst]; i++) {
 		valueMemFirst[counter++] = mem->mem[i];
 		}
+	valueMemFirst[counter] = '\0';	 
 	counter = 0;
 	for(size_t i = mem->varMemStartPointers[indexOfLast]; i < mem->varMemEndPoiners[indexOfLast]; i++) {
 		valueMemLast[counter++] = mem->mem[i];
 		}
+	valueMemLast[counter] = '\0';
 
 	int a = atoi(valueMemFirst);
 	int b = atoi(valueMemLast);
@@ -291,7 +296,7 @@ void bif(char* token,MEMORY *mem,FILE *f) {
 
 //
 
-void brandom(char* token,MEMORY *mem) {
+static inline void brandom(char* token,MEMORY *mem) {
 	srand(time(0));
 	token = strtok(0," ");
 	int isVarExist = 0;
@@ -312,7 +317,7 @@ void brandom(char* token,MEMORY *mem) {
 	}
 //GOTOSUB go to declared lable
 
-void gotosub(char* token, MEMORY* mem, FILE *f) {
+static inline void gotosub(char* token, MEMORY* mem, FILE *f) {
 	//printf("NESTO");
 	token = strtok(0," ");
 	fseek(f,0,SEEK_SET);
@@ -341,7 +346,7 @@ void gotosub(char* token, MEMORY* mem, FILE *f) {
 	}
 
 //init graphics
-void initGraphics(SDL_Renderer *renderer,SDL_Window *window) {
+static inline void initGraphics(SDL_Renderer **renderer,SDL_Window **window) {
 	SDL_CreateWindowAndRenderer(width,height,SDL_RENDERER_ACCELERATED,window,renderer);
 	}
 
@@ -349,10 +354,10 @@ void initGraphics(SDL_Renderer *renderer,SDL_Window *window) {
 
 //check quit
 
-void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]) {
+static inline void drawPixel(SDL_Renderer **renderer,SDL_Window **window, char* token, MEMORY *mem, uint8_t PIXELS[height][width]) {
 
-	static char x[10],y[10],color[10],varX[10],varY[10],varColor[10],isDraw[10];
-	int X,Y = 1,C = 1,counter = 0,ba;
+	static char x[10],y[10],color[10],varX[10],varY[10],varColor[10];
+	int X,Y = 1,C = 1,counter = 0;
 	token = strtok(0, " ");
 	strcpy(x,token);
 	//printf("x %s", x);
@@ -394,7 +399,7 @@ void drawPixel(SDL_Renderer *renderer,SDL_Window *window, char* token, MEMORY *m
 //scanf("%d",&ba);
 	}
 //Render pixels
-void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]) {
+static inline void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][width]) {
 	SDL_RenderClear(renderer);
 	for (size_t i = 0; i < height; i++) {
 		for (size_t j = 0; j < width; j++) {
@@ -417,11 +422,11 @@ void render(SDL_Renderer *renderer,SDL_Window *window,uint8_t PIXELS[height][wid
 
 	}
 //Load value of b to a to memory start:stop
-void load(char* token,MEMORY *mem) {
+static inline void load(char* token,MEMORY *mem) {
 	token = strtok(NULL," ");
 	//printf("%s",token);
 	int doesExist = 0;
-	size_t A, B;
+	static size_t A, B;
 
 	//CHECK DOES VAR A AND B  EXIST AND SAVE THER INDEX
 	for (size_t i = 0; i < mem->counterVar; i++) {
@@ -466,11 +471,11 @@ void load(char* token,MEMORY *mem) {
 //
 
 //
-void execute(MEMORY *mem) {
+static inline void execute(MEMORY *mem) {
 
 	FILE *f = fopen(fileName,"r");  //Open File prob with args
 	char line[MAX_LINE];     //Stores one line of instruction     kasnije flag
-	size_t numberOfLine = 0;
+	//size_t numberOfLine = 0;
 
 	//GRAPHIC STUF
 	SDL_Renderer *renderer;
@@ -479,7 +484,7 @@ void execute(MEMORY *mem) {
 	//
 
 	static uint8_t PIXELS[height][width];
-	const char* token;// = strtok(line , " ");  // First token
+	static char* token;// = strtok(line , " ");  // First token
 
 	while(1) {
 
@@ -504,6 +509,7 @@ void execute(MEMORY *mem) {
 		//int curentAdress = atoi(token);
 		token = strtok(line," ");       // Next token
 		//printf("%s\n" ,token);
+		//system("pause");
 		//printMemory(mem,0,50);
 		//printVar(mem,0,20);
 		//if (sycmp(CharTokensRepresentation[GOTOSUB], token) == 0){
@@ -521,6 +527,7 @@ void execute(MEMORY *mem) {
 
 		else if(memcmp(CharTokensRepresentation[PRINT], token,5) == 0) {  //If token is print
 			print(token,mem);
+			//printf("Print");
 			}
 		else if(memcmp(CharTokensRepresentation[GOTO], token,4) == 0) {
 			bgoto(token,mem,f);
@@ -555,8 +562,9 @@ void execute(MEMORY *mem) {
 			}
 		// if evriting else is finish now we nead to see math operations
 		else {
-			static char varName[30],firstOperand[30],lastOperand[30];
-			static int varExist = 0,result,firstIndex,lastIndex ;
+			//printf("Math\n");
+			static char varName[30];
+			static int varExist = 0,firstIndex,lastIndex ;
 			strcpy(varName,token);
 			//printf("Nesto\n\n");
 			//system("pause");
@@ -603,6 +611,7 @@ void execute(MEMORY *mem) {
 		}
 	}
 
+
 int main(int argc, char* argv[]) {
 	//printf("%s", CharTokensRepresentation[PLUS]);
 	//printf("Nesto\n");
@@ -616,8 +625,8 @@ int main(int argc, char* argv[]) {
 	  return 0 ;
 	//exit(EXIT_SUCCESS);
 	}
-//	strcpy(fileName,argv[1]);
-	MEMORY  memory;
+	strcpy(fileName,argv[1]);
+	static MEMORY  memory;
 	allocMemory(&memory);
 	execute(&memory);
 	return 0;
