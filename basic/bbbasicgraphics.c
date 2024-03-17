@@ -475,12 +475,12 @@ static inline void keyboardCheck(char* token,MEMORY *mem){
 	//system("pause");
 	uint8_t ke = 0;
 	
-	if(SDL_PollEvent(&event)){
-		ke = (uint8_t)event.key.keysym.sym;
+	//if(SDL_PollEvent(&event)){
+		//ke = (uint8_t)event.key.keysym.sym;
 		//printf("key %u %c\n", ke, ke);
 		for(size_t i = 0; i < mem->counterVar;i++){
 		if(strcmp(token,mem->varName[i]) == 0){
-			mem->mem[mem->varMemStartPointers[i]]  = (uint8_t)ke;
+			mem->mem[mem->varMemStartPointers[i]]  = (uint8_t)mem->ke;
 			//printf("start %d",mem->varMemStartPointers[i]);
 			//system("pause");
 			//printf()
@@ -488,11 +488,7 @@ static inline void keyboardCheck(char* token,MEMORY *mem){
 	}
 		//system("pause");
 	}
-		
 
-	
-	
-}
 
 //
 
@@ -520,6 +516,7 @@ static inline void execute(MEMORY *mem) {
 			if(event.type == SDL_QUIT) {
 				break;
 				}
+				mem->ke = (uint8_t)event.key.keysym.sym;
 			}
 		void* s =  fgets(line,MAX_LINE,f);       //Read line of instructions
 		//printf("%s line ",line);
