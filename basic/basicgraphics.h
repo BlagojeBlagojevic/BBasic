@@ -116,8 +116,7 @@ typedef struct{
 	int RET;                        //REPRESENT VALUE OF RETURN TO MAIN 
 	size_t counterVar;               //WHAT VARIABLE VE ARE ON            
 	size_t lastMemAddress;
-	//int numRepresentationOfTokens[];
-	
+	uint8_t ke;	
 }MEMORY;
 
 static inline void allocMemory(MEMORY *memory);  //Allocation of memory in VM
