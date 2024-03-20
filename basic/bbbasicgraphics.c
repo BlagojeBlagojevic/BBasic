@@ -61,7 +61,7 @@ static inline void var(char* token,MEMORY *mem) {
 		token = strtok(0, " ");
 		//printf("\n%s",token);
 		//strcpy(pom,token);
-		//int counter = 0; 
+		//int counter = 0;
 		//size_t y = 0;
 		//for(;token[y]!= '\0';y++);
 		//int size = arrSize(token);
@@ -256,12 +256,12 @@ static inline void bif(char* token,MEMORY *mem,FILE *f) {
 	assert(indexOfLast!=-1 && "VAR IS NOT DECLARED!!!");
 
 	static char valueMemFirst[30],valueMemLast[30];
-	
+
 	size_t counter = 0;
 	for(size_t i = mem->varMemStartPointers[indexOfFirst]; i < mem->varMemEndPoiners[indexOfFirst]; i++) {
 		valueMemFirst[counter++] = mem->mem[i];
 		}
-	valueMemFirst[counter] = '\0';	 
+	valueMemFirst[counter] = '\0';
 	counter = 0;
 	for(size_t i = mem->varMemStartPointers[indexOfLast]; i < mem->varMemEndPoiners[indexOfLast]; i++) {
 		valueMemLast[counter++] = mem->mem[i];
@@ -466,34 +466,37 @@ static inline void load(char* token,MEMORY *mem) {
 	}
 
 
-//Keyboard input 
-static inline void keyboardCheck(char* token,MEMORY *mem){
-	
-	SDL_Event event;
+//Keyboard input
+static inline void keyboardCheck(char* token,MEMORY *mem) {
+
+	//SDL_Event event;
 	token = strtok(0," ");
-		
-	//system("pause");
-	uint8_t ke = 0;
-	
-	//if(SDL_PollEvent(&event)){
-		//ke = (uint8_t)event.key.keysym.sym;
-		//printf("key %u %c\n", ke, ke);
-		for(size_t i = 0; i < mem->counterVar;i++){
-		if(strcmp(token,mem->varName[i]) == 0){
+
+	int isExist = -1;
+	for(size_t i = 0; i < mem->counterVar; i++) {
+		if(strcmp(token,mem->varName[i]) == 0) {
 			mem->mem[mem->varMemStartPointers[i]]  = (uint8_t)mem->ke;
-			//printf("start %d",mem->varMemStartPointers[i]);
-			//system("pause");
-			//printf()
+			isExist = 0;
+			}
 		}
+	assert("Var not declared"&& isExist == 0);
+	//system("pause");
 	}
-		//system("pause");
-	}
-
 
 //
-
 //
+// CALL system
+static inline systemCall(char *token,MEMORY *mem) {
+	token = strtok(0," ");
+	static char call[10];
+	strcpy(call, token);
+	system(call);
+	//system("pause");
 
+	}
+//
+//
+//
 //
 static inline void execute(MEMORY *mem) {
 
@@ -516,7 +519,7 @@ static inline void execute(MEMORY *mem) {
 			if(event.type == SDL_QUIT) {
 				break;
 				}
-				mem->ke = (uint8_t)event.key.keysym.sym;
+			mem->ke = (uint8_t)event.key.keysym.sym;
 			}
 		void* s =  fgets(line,MAX_LINE,f);       //Read line of instructions
 		//printf("%s line ",line);
@@ -585,12 +588,19 @@ static inline void execute(MEMORY *mem) {
 		else if (memcmp(CharTokensRepresentation[RENDER], token,6) == 0) {
 			render(renderer,window,PIXELS);
 			}
-			
+
 		else if(memcmp(CharTokensRepresentation[KEYINPUT], token,8) == 0) {
 			//printf("Key is hear!!!\n");
 			keyboardCheck(token,mem);
 			}
-			
+
+
+		else if(memcmp(CharTokensRepresentation[SYSTEM], token,6) == 0) {
+			systemCall(token,mem);
+			//system("pause");
+
+			}
+
 		// if evriting else is finish now we nead to see math operations
 		else {
 			//printf("Math\n");
@@ -641,7 +651,7 @@ static inline void execute(MEMORY *mem) {
 		//system("pause");
 		}
 	}
-	
+
 
 
 int main(int argc, char* argv[]) {
@@ -652,11 +662,11 @@ int main(int argc, char* argv[]) {
 	//while(1);
 
 	//printf(" %s\n",fileName);
-	if(argc == 1){
-	  printf("path to program <program.bas>\n");
-	  return 0 ;
-	//exit(EXIT_SUCCESS);
-	}
+	if(argc == 1) {
+		printf("path to program <program.bas>\n");
+		return 0 ;
+		exit(EXIT_SUCCESS);
+		}
 	strcpy(fileName,argv[1]);
 	static MEMORY  memory;
 	allocMemory(&memory);
