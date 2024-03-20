@@ -77,7 +77,7 @@ typedef enum {
 const char* CharTokensRepresentation[] = {  
 	  								  
 											"PRINT",
- 	  								  "GOTO",
+ 	  								                "GOTO",
 											"+",
 											"-",
 											"*",
@@ -162,7 +162,7 @@ static inline void load(char* token,MEMORY *mem);
 static inline void keyboardCheck(char* token,MEMORY *mem);
 //
 //System call 
-static inline systemCall(char *token,MEMORY *mem);
+static inline void systemCall(char *token,MEMORY *mem);
 //
 //
 //
