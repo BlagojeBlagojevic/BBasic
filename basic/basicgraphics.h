@@ -38,7 +38,8 @@
 //__attribute__((vector (clauses))) //return_type simd_enabled_function_name(arguments);
 
 //Type Declaration
-char fileName[40];
+//char fileName[] = "program.bas";
+char fileName[30];
 typedef enum {
 	
 	PRINT,       //Token for printing on  screen
@@ -66,8 +67,8 @@ typedef enum {
 	PIXEL,       //Token for store walue of pixel
 	RENDER,      //Token used to render the scren in pixels
 	LOAD,        //Token for loading part of var in memory
-	KEYINPUT     //Token for loading key value if key is press if not somting return
-
+	KEYINPUT,    //Token for loading key value if key is press if not somting return
+	SYSTEM       //Token for caling system 
 	
 }TOKENS;
 
@@ -101,6 +102,7 @@ const char* CharTokensRepresentation[] = {
 											"RENDER",
 											"LOAD",
 											"KEYINPUT",
+											"SYSTEM"
                                           };
 
 //
@@ -158,6 +160,9 @@ static inline void load(char* token,MEMORY *mem);
 //
 //Keybord input
 static inline void keyboardCheck(char* token,MEMORY *mem);
+//
+//System call 
+static inline systemCall(char *token,MEMORY *mem);
 //
 //
 //
