@@ -486,7 +486,7 @@ static inline void keyboardCheck(char* token,MEMORY *mem) {
 //
 //
 // CALL system
-static inline systemCall(char *token,MEMORY *mem) {
+static inline void systemCall(char *token,MEMORY *mem) {
 	token = strtok(0," ");
 	static char call[10];
 	strcpy(call, token);
